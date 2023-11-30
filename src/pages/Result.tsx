@@ -4,8 +4,9 @@ import { useState } from "react";
 import Score from "./Score";
 import { useSelector } from "react-redux";
 import Result_Score from "./Result_Score";
+import Student from "./Student";
 
-const Result = () => {
+const Result = (calculateGrade,calculateTotal) => {
 
   const data = useSelector((state) => state.data)
   console.log(data)

@@ -1,9 +1,10 @@
 import { Link,Outlet, Navigate, useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect, Component } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch,useSelector } from "react-redux";
 import Student from "./Student";
 import { addStudent } from "../Components/Slice";
+import Pagination from "../Components/Pagination";
 
 const Data_Init = [
   {
@@ -11,6 +12,7 @@ const Data_Init = [
     page:"",
     Idstu: '',
     Name: "",
+    Collect: 0,
     Midterm: 0,
     Final: 0,
     Point: 0,
@@ -18,15 +20,30 @@ const Data_Init = [
   },
 ];
 
+
 const Score = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const location = useLocation();
   const [student, setStudent] = useState(Data_Init);
+  const data = useSelector((state) => state.data)
+  const Id = data.Id
+  const Subj = data.Subj
+  const Credit = data.Credit
+  
+  const [currentPage, setCurrentPage] = useState(1);
 
-  const changeEachRecord = (Idstu, name, mid, final, id) => {
+    let totalPage = Math.ceil(student.length/10)
+
+    const handlePage = (newPage) => {
+        setCurrentPage(newPage)
+    }
+    const handleTotalPage = (newPage) => {
+        totalPage = newPage
+    }
+
+  const changeEachRecord = (Idstu, name, collect, mid, final, id) => {
     //new student
-    if (Idstu==null && name == null && mid == null && final == null) {
+    if (Idstu==null && name == null && collect == null && mid == null && final == null) {
       const ids = student.map((object) => {
         return object.id;
       });
@@ -35,7 +52,7 @@ const Score = () => {
       setStudent((student) => {
         return [
           ...student,
-          { id: lastId,page: pageNumber,Idstu: "",  Name: "", Midterm: 0, Final: 0 },
+          { id: lastId, page: pageNumber, Idstu: "",  Name: "", collect: 0, Midterm: 0, Final: 0 },
         ];
       });
     }
@@ -55,6 +72,16 @@ const Score = () => {
       newStudent.find((element) => {
         if (element.id == id) {
           element.Name = name;
+          return element;
+        }
+      });
+      setStudent(newStudent);
+    }
+    else if (collect != null) {
+      let newStudent = [...student];
+      newStudent.find((element) => {
+        if (element.id == id) {
+          element.Collect = collect;
           return element;
         }
       });
@@ -84,12 +111,11 @@ const Score = () => {
     }
   };
 
-  const { Id, Subj, Credit } = location.state;
-
-  const calculateTotal = (midterm: string, final: string) => {
+  const calculateTotal = (collect: string,midterm: string, final: string) => {
+    const collectValue = parseFloat(collect) || 0;
     const midtermValue = parseFloat(midterm) || 0;
     const finalValue = parseFloat(final) || 0;
-    return midtermValue + finalValue;
+    return collectValue + midtermValue + finalValue;
   };
 
   const calculateGrade = (total: number) => {
@@ -135,13 +161,15 @@ const Score = () => {
 
   return (
     <>
+
       <div>
+
         <h1 className="bg-border h-20 text-xl font-bold pl-16 pt-7 mt-10 ml-20 mr-20 rounded-lg text-black text-left">
           {" "}
           บันทึกคะแนน
         </h1>
       </div>
-
+      <Pagination student={student} currentPage={currentPage} totalPage={totalPage} handlePage={handlePage}/>
       <div className="bg-border pl-16 pt-7 mt-10 ml-20 mr-20 rounded-lg">
         <p className="font-bold pt-3 text-2xl text-center text-black">
           วิชา{Subj} หน่วยกิต {Credit}
@@ -149,6 +177,18 @@ const Score = () => {
         <p className="text-2xl pt-8 text-center mb-8 text-black">
           ภาคเรียนที่ 2 ปีการศึกษา 2566
         </p>
+
+        <div className="flex items-left justify-left pt-8 pb-8">
+              <button
+                type="button"
+                onClick={()=>{
+                  changeEachRecord(null,null,null,null,null,)
+                }}
+                className="bg-green hover:bg-darkgreen text-white font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline mt-4 mb-4"
+              >
+                เพิ่มรายชื่อ
+              </button>
+            </div>
 
         <div className="max-w-screen-xl mx-auto">
           <form >
@@ -158,7 +198,7 @@ const Score = () => {
                   <th className="border p-2">ลำดับ</th>
                   <th className="border p-2">รหัสนิสิต</th>
                   <th className="border p-2">ชื่อ-นามสกุล</th>
-                  <th className="border p-2">คะแนนเก็บ</th>
+                  <th className="border p-2">คะแนนทั้งหมด</th>
                   <th className="border p-2">สอบกลางภาค</th>
                   <th className="border p-2">สอบปลายภาค</th>
                   <th className="border p-2">คะแนนรวม</th>
@@ -167,21 +207,9 @@ const Score = () => {
                 </tr>
               </thead>
               <tbody>
-                <Student student={student} changeEachRecord={changeEachRecord} calculateGrade={calculateGrade} calculateTotal={calculateTotal}/>
+                <Student student={student} changeEachRecord={changeEachRecord} calculateGrade={calculateGrade} calculateTotal={calculateTotal} currentPage={currentPage}/>
               </tbody>
             </table>
-
-            <div className="flex items-center justify-center pt-8 pb-8">
-              <button
-                type="button"
-                onClick={()=>{
-                  changeEachRecord(null,null,null,null,)
-                }}
-                className="bg-green hover:bg-darkgreen text-white font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline mt-4 mb-4"
-              >
-                เพิ่มรายชื่อ
-              </button>
-            </div>
 
             <div className="flex items-center justify-center pt-8 pb-8">
               <Link

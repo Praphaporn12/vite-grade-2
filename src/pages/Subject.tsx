@@ -1,20 +1,22 @@
 import { Navigate, useNavigate } from "react-router-dom";
 import React, { useState } from "react";
 import Score from "./pages/Score";
+import { useDispatch } from "react-redux";
+import { addSubject } from "../Components/Slice";
 
 const Subject = () => {
   const navigate = useNavigate();
   const [Id, setId] = useState("");
   const [Subj, setSubj] = useState("");
   const [Credit, setCredit] = useState("");
+  const dispatch=useDispatch()
   
 
   const handleScore= () => {
-    navigate("/Score",{
-      state:{Id,Subj,Credit},
-    })
+    dispatch(addSubject({Id,Subj,Credit}))
+    navigate("/Score")
+    }
     
-  };
   return (
     <>
       <div>
