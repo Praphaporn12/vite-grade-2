@@ -6,14 +6,14 @@ const Pagination = ({student,currentPage,totalPage,handlePage}) => {
   // console.log(totalPage)
   Array(totalPage).fill().map((item,index)=>{
     components.push(
-      <NumberPageButton key={index+1} pageNumber={index+1} currentPage={currentPage} handlePage={handlePage}/>
+      <NumberPageButton key={index+1} pageNumber={index+1} currentPage={currentPage} handlePage={handlePage} totalPage={totalPage}/>
     )
   })
 
   return (
     <div className=' w-full h-10 flex justify-center '>
       <div className=' w-1/4 h-full flex justify-center '>
-        <button className='flex justify-center items-center border-2 px-4 mx-1 rounded-lg hover:bg-red-500 font-bold text-white bg-black'
+        <button className='flex justify-center items-center border-2 px-4 mx-1 rounded-lg hover:bg-red-500 font-bold text-white bg-darkblue'
           onClick={()=>{
             if(currentPage!=1){
               handlePage(currentPage-1)
@@ -23,7 +23,7 @@ const Pagination = ({student,currentPage,totalPage,handlePage}) => {
             &lt;
         </button>
         {components}
-        <button className='flex justify-center items-center border-2 px-4 mx-1 rounded-lg hover:bg-red-500 font-bold text-white bg-black'
+        <button className='flex justify-center items-center border-2 px-4 mx-1 rounded-lg hover:bg-red-500 font-bold text-white bg-darkblue'
           onClick={()=>{
             if(currentPage!=totalPage){
               handlePage(currentPage+1)
@@ -40,9 +40,9 @@ const Pagination = ({student,currentPage,totalPage,handlePage}) => {
 const NumberPageButton = ({pageNumber,currentPage,handlePage}) => {
   let style = ''
   if(currentPage==pageNumber){
-    style='flex justify-center items-center border-2 px-4 mx-1 rounded-lg font-bold text-white bg-red-400 bg-border'
+    style='flex justify-center items-center border-2 px-4 mx-1 rounded-lg font-bold text-white bg-red-400 bg-top'
   }else{
-    style='flex justify-center items-center border-2 px-4 mx-1 rounded-lg hover:bg-red-500 font-bold text-white bg-black'
+    style='flex justify-center items-center border-2 px-4 mx-1 rounded-lg hover:bg-red-500 font-bold text-white bg-grayblue'
   }
   return (
     <button className={style}

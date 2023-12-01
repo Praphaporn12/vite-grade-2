@@ -2,11 +2,22 @@ import { Navigate, useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useState } from "react";
+import Pagination from "../Components/Pagination";
 
 const Result_Score = ({ student }) => {
   const navigate = useNavigate();
   const data = useSelector((state) => state.data);
   console.log(data);
+
+  const Id = data.Id
+  const Subj = data.Subj
+  const Credit = data.Credit
+  const sum = data.sum
+
+
+
+
+
 
   const calculateTotal = (collect: string,midterm: string, final: string) => {
     const collectValue = parseFloat(collect) || 0;
@@ -15,7 +26,16 @@ const Result_Score = ({ student }) => {
     return collectValue + midtermValue + finalValue;
   };
 
-  const calculateGrade = (total: number) => {
+  const [currentPage, setCurrentPage] = useState(1);
+  let totalPage = Math.ceil(student.length/10)
+  const handlePage = (newPage) => {
+        setCurrentPage(newPage)
+  }
+
+  
+  let gpa:number = 0
+  let totalStudent = student.length
+  const calculateGrade = (total: string) => {
     if (total >= 80) {
       return "A";
     } else if (total >= 70) {
@@ -33,46 +53,59 @@ const Result_Score = ({ student }) => {
     }
   };
 
+  student.map((item)=>{
+        gpa = calculateGrade(item.total) + gpa
+    })
+
+
   let Components = [];
   student.map((item, index) => {
     Components.push(
-      <div className="flex flex-row items-center w-2/3 min-w-full bg-white border border-gray rounded-lg text-lg justify-around">
-        <div className="bg-gray-100">
-          <h1>{item.id}</h1>
-        </div>
-        <div className=" border-darkgray w-1/8 flex items-center justify-center">
-          <h1>{item.Idstu}</h1>
-        </div>
-        <div className=" border-darkgray w-1/8 flex items-center justify-center">
-          <h1>{item.Name}</h1>
-        </div>
-        <div className=" border-darkgray w-1/8 flex items-center justify-center">
-          <h1>{item.Collect}</h1>
-        </div>
-        <div className=" border-darkgray w-1/8 flex items-center justify-center">
-          <h1>{item.Midterm}</h1>
-        </div>
-        <div className=" border-darkgray w-1/8 flex items-center justify-center">
-          <h1>{item.Final}</h1>
-        </div>
-        <div className=" border-darkgray w-1/8 flex items-center justify-center">
-          <h1>
-            {item.Midterm && item.Final && item.Collect
-              ? calculateTotal(item.Midterm, item.Final, item.Collect)
-              : ""}
-          </h1>
-        </div>
-        <div className=" border-darkgray w-1/8 flex items-center justify-center">
-          <h1>
-            {item.Midterm && item.Final && item.Collect
-              ? calculateGrade(calculateTotal(item.Midterm, item.Final, item.Collect))
-              : ""}
-          </h1>
-        </div>
-        <div className=" border-darkgray w-1/8 flex items-center justify-center">
-          <h1>{item.etc}</h1>
-        </div>
-      </div>
+      // <div className="max-w-screen-xl mx-auto text-center">
+        <form>
+          <table className=" min-w-full bg-white border border-gray-300 rounded-lg text-lg justify-around">
+            <thead>
+            <tr className=" text-black">
+              <th className="border p-2">
+                  <h1>{item.id}</h1>
+              </th>
+              <th className="border p-8">
+                  <h1>{item.Idstu}</h1>
+              </th>
+              <th className="border p-2">
+                  <h1>{item.Name}</h1>
+              </th>
+              <th className="border p-2">
+                  <h1>{item.Collect}</h1>
+              </th>
+              <th className="border p-2">
+                  <h1>{item.Midterm}</h1>
+              </th>
+              <th className="border p-2">
+                  <h1>{item.Final}</h1>
+              </th>
+              <th className="border p-2">
+                  <h1>
+                    {item.Midterm && item.Final && item.Collect
+                      ? calculateTotal(item.Midterm, item.Final, item.Collect)
+                      : ""}</h1>
+              </th>
+              <th className="border p-2">
+                  <h1>
+                      {item.Midterm && item.Final && item.Collect
+                      ? calculateGrade(calculateTotal(item.Midterm, item.Final, item.Collect))
+                      : ""}
+                      </h1>
+              </th>
+              <th className="border p-2">
+                  <h1>--</h1>
+              </th>
+              </tr>
+        </thead>
+      
+      </table>
+      </form>
+      // </div>
     );
   });
 
@@ -81,10 +114,17 @@ const Result_Score = ({ student }) => {
   };
 
   return (
+    <>
+    <Pagination
+        student={student}
+        currentPage={currentPage}
+        totalPage={totalPage}
+        handlePage={handlePage}
+      />
     <div className="bg-border  pl-16 pt-7 mt-10 ml-20 mr-20 rounded-lg text-black text-left">
       <p className="pt-3 text-xl ">ปีการศึกษา 2566</p>
       <p className=" text-xl  pt-2   ">
-        รหัสวิชา{data.Id} วิชา{data.Subj}
+        รหัสวิชา {Id} วิชา {Subj}
       </p>
       <p className=" text-xl  pt-2 mb-8 pb-3">สถานะ : บันทึกเรียบร้อยแล้ว</p>
 
@@ -111,7 +151,7 @@ const Result_Score = ({ student }) => {
         <form>
           <table className=" min-w-full bg-white border border-gray-300 rounded-lg text-lg">
             <thead>
-              <tr className="bg-grayblue p-8 text-black">
+              <tr className="bg-grayblue p-2 text-black">
                 <th className="border p-2">ลำดับ</th>
                 <th className="border p-2">รหัสนิสิต</th>
                 <th className="border p-2">ชื่อ-นามสกุล</th>
@@ -125,9 +165,10 @@ const Result_Score = ({ student }) => {
             </thead>
           </table>
           {Components}
-          <p className="pt-3 text-1xl text-black text-center font-bold text-xl">
-            เกรดเฉลี่ย GPA ของรายวิชาคือ 4.00
-          </p>
+          <div className="pt-3 text-1xl text-black text-center font-bold text-xl">
+            <h1>เกรดเฉลี่ย GPA ของรายวิชาคือ {gpa/totalStudent}</h1>
+              
+          </div>
         </form>
         <div className="flex items-center justify-center pt-8 pb-8">
           <button
@@ -139,6 +180,7 @@ const Result_Score = ({ student }) => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 export default Result_Score;
