@@ -129,7 +129,7 @@ const Score = () => {
     return collectValue + midtermValue + finalValue;
   };
 
-  const calculateGrade = (total: string) => {
+  const calculateGrade = (total) => {
     if (total >= 80) {
       return "A";
     } else if (total >= 70) {

@@ -14,11 +14,6 @@ const Result_Score = ({ student }) => {
   const Credit = data.Credit
   const sum = data.sum
 
-
-
-
-
-
   const calculateTotal = (collect: string,midterm: string, final: string) => {
     const collectValue = parseFloat(collect) || 0;
     const midtermValue = parseFloat(midterm) || 0;
@@ -31,11 +26,8 @@ const Result_Score = ({ student }) => {
   const handlePage = (newPage) => {
         setCurrentPage(newPage)
   }
-
   
-  let gpa:number = 0
-  let totalStudent = student.length
-  const calculateGrade = (total: string) => {
+  const calculateGrade = (total) => {
     if (total >= 80) {
       return "A";
     } else if (total >= 70) {
@@ -53,8 +45,32 @@ const Result_Score = ({ student }) => {
     }
   };
 
-  student.map((item)=>{
-        gpa = calculateGrade(item.total) + gpa
+  
+
+  let gpa:number = 0
+  let totalStudent:number = student.length
+    const getNumOfGrade = (grade:string) => {
+        if(grade=='A'){
+            return 4
+        }else if(grade=='B+'){
+            return 3.5
+        }else if(grade=='B'){
+            return 3
+        }else if(grade=='C+'){
+            return 2.5
+        }else if(grade=='C'){
+            return 2
+        }else if(grade=='D+'){
+            return 1.5
+        }else if(grade=='D'){
+            return 1
+        }else if(grade=='F'){
+            return 0
+        }
+    }
+
+    student.map((item)=>{
+        gpa = getNumOfGrade(item.grade) + gpa
     })
 
 
@@ -69,7 +85,7 @@ const Result_Score = ({ student }) => {
               <th className="border p-2">
                   <h1>{item.id}</h1>
               </th>
-              <th className="border p-8">
+              <th className="border p-2">
                   <h1>{item.Idstu}</h1>
               </th>
               <th className="border p-2">
