@@ -30,17 +30,19 @@ const Result_Score = ({ student }) => {
   const calculateGrade = (total) => {
     if (total >= 80) {
       return "A";
-    } else if (total >= 70) {
+    } else if (total >= 75) {
       return "B+";
-    } else if (total >= 65) {
+    } else if (total >= 70) {
       return "B";
-    } else if (total >= 60) {
+    } else if (total >= 65) {
       return "C+";
-    } else if (total >= 55) {
+    } else if (total >= 60) {
       return "C";
-    } else if (total >= 50) {
+    } else if (total >= 55) {
+      return "D+";
+    } else if(total >=50) {
       return "D";
-    } else {
+    }else {
       return "F";
     }
   };
@@ -70,8 +72,12 @@ const Result_Score = ({ student }) => {
     }
 
     student.map((item)=>{
-        gpa = getNumOfGrade(item.grade) + gpa
+      console.log(item.Grade)
+        gpa = getNumOfGrade(item.Grade) + gpa
     })
+
+    console.log(gpa)
+    console.log(totalStudent)
 
 
   let Components = [];

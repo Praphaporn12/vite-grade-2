@@ -60,16 +60,18 @@ const Student = ({
               type="text"
               placeholder="กรุณากรอกคะแนน"
               value={index.Collect}
-              onChange={(e) =>
-                changeEachRecord(
-                  null,
-                  null,
-                  e.target.value,
-                  null,
-                  null,
-                  index.id
-                )
-              }
+              onChange={(e)=>{
+                if(!isNaN(Number(e.target.value))){
+                  changeEachRecord(
+                    null,
+                    null,
+                    Number(e.target.value),
+                    null,
+                    null,
+                    index.id
+                  )
+                }
+              }}
               required
             />
           </p>
@@ -82,16 +84,18 @@ const Student = ({
             type="text"
             placeholder="กรุณากรอกคะแนน"
             value={index.Midterm}
-            onChange={(e) =>
-              changeEachRecord(
-                null,
-                null,
-                null,
-                e.target.value,
-                null,
-                index.id
-              )
-            }
+            onChange={(e)=>{
+              if(!isNaN(Number(e.target.value))){
+                changeEachRecord(
+                  null,
+                  null,
+                  null,
+                  Number(e.target.value),
+                  null,
+                  index.id
+                )
+              }
+            }}
             required
           />
         </th>
@@ -102,16 +106,18 @@ const Student = ({
             type="text"
             placeholder="กรุณากรอกคะแนน"
             value={index.Final}
-            onChange={(e) =>
-              changeEachRecord(
-                null,
-                null,
-                null,
-                null,
-                e.target.value,
-                index.id
-              )
-            }
+            onChange={(e)=>{
+              if(!isNaN(Number(e.target.value))){
+                changeEachRecord(
+                  null,
+                  null,
+                  null,
+                  null,
+                  Number(e.target.value),
+                  index.id
+                )
+              }
+            }}
             required
           />
         </th>

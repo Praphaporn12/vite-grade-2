@@ -16,7 +16,7 @@ const Data_Init = [
     Midterm: 0,
     Final: 0,
     Point: 0,
-    Grade: "",
+    Grade: "F",
   },
 ];
 
@@ -40,6 +40,33 @@ const Score = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
 
+  const calGrade = (collect,midterm,final) => {
+    let total = collect+midterm+final
+    if(total>=80){
+        return 'A'
+    }
+    else if(total>=75){
+        return 'B+'
+    }
+    else if(total>=70){
+        return 'B'
+    }
+    else if(total>=65){
+        return 'C+'
+    }
+    else if(total>=60){
+        return 'C'
+    }else if(total>=55){
+        return 'D+'
+    }
+    else if(total>=50){
+        return 'D'
+    }
+    else if(total<=49){
+        return 'F'
+    }
+}
+
   const changeEachRecord = (Idstu, name, collect, mid, final, id) => {
     //new student
     if (
@@ -62,9 +89,10 @@ const Score = () => {
             page: pageNumber,
             Idstu: "",
             Name: "",
-            collect: 0,
+            Collect: 0,
             Midterm: 0,
             Final: 0,
+            Grade:'F'
           },
         ];
       });
@@ -93,6 +121,8 @@ const Score = () => {
       newStudent.find((element) => {
         if (element.id == id) {
           element.Collect = collect;
+          element.Grade = calGrade(collect,element.Midterm,element.Final)
+          element.Point = collect + element.Midterm + element.Final
           return element;
         }
       });
@@ -104,6 +134,8 @@ const Score = () => {
       newStudent.find((element) => {
         if (element.id == id) {
           element.Midterm = mid;
+          element.Grade = calGrade(element.Collect,mid,element.Final)
+          element.Point = element.Collect + mid + element.Final
           return element;
         }
       });
@@ -115,6 +147,8 @@ const Score = () => {
       newStudent.find((element) => {
         if (element.id == id) {
           element.Final = final;
+          element.Grade = calGrade(element.Collect,element.Midterm,final) // 'A'
+          element.Point = element.Collect + element.Midterm + final
           return element;
         }
       });
@@ -132,17 +166,19 @@ const Score = () => {
   const calculateGrade = (total) => {
     if (total >= 80) {
       return "A";
-    } else if (total >= 70) {
+    } else if (total >= 75) {
       return "B+";
-    } else if (total >= 65) {
+    } else if (total >= 70) {
       return "B";
-    } else if (total >= 60) {
+    } else if (total >= 65) {
       return "C+";
-    } else if (total >= 55) {
+    } else if (total >= 60) {
       return "C";
-    } else if (total >= 50) {
+    } else if (total >= 55) {
+      return "D+";
+    } else if(total >=50) {
       return "D";
-    } else {
+    }else {
       return "F";
     }
   };
