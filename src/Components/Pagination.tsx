@@ -1,9 +1,9 @@
 import React from 'react';
 
-const Pagination = ({student,currentPage,totalPage,handlePage}) => {
+const Pagination = ({currentPage, totalPage, handlePage}:
+      {student,currentPage:number,totalPage:number,handlePage:number}) => {
 
-  let components = []
-  // console.log(totalPage)
+  let components: React.ReactNode[] = []
   Array(totalPage).fill().map((item,index)=>{
     components.push(
       <NumberPageButton key={index+1} pageNumber={index+1} currentPage={currentPage} handlePage={handlePage} totalPage={totalPage}/>

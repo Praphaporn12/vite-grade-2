@@ -14,7 +14,7 @@ const Result_Score = ({ student }) => {
   const Credit = data.Credit
   const sum = data.sum
 
-  const calculateTotal = (collect: string,midterm: string, final: string) => {
+  const calculateTotal = (collect: string, midterm: string, final: string) => {
     const collectValue = parseFloat(collect) || 0;
     const midtermValue = parseFloat(midterm) || 0;
     const finalValue = parseFloat(final) || 0;
@@ -22,11 +22,11 @@ const Result_Score = ({ student }) => {
   };
 
   const [currentPage, setCurrentPage] = useState(1);
-  let totalPage = Math.ceil(student.length/10)
+  let totalPage = Math.ceil(student.length / 10)
   const handlePage = (newPage) => {
-        setCurrentPage(newPage)
+    setCurrentPage(newPage)
   }
-  
+
   const calculateGrade = (total) => {
     if (total >= 80) {
       return "A";
@@ -40,109 +40,60 @@ const Result_Score = ({ student }) => {
       return "C";
     } else if (total >= 55) {
       return "D+";
-    } else if(total >=50) {
+    } else if (total >= 50) {
       return "D";
-    }else {
+    } else {
       return "F";
     }
   };
 
-  
 
-  let gpa:number = 0
-  let totalStudent:number = student.length
-    const getNumOfGrade = (grade:string) => {
-        if(grade=='A'){
-            return 4
-        }else if(grade=='B+'){
-            return 3.5
-        }else if(grade=='B'){
-            return 3
-        }else if(grade=='C+'){
-            return 2.5
-        }else if(grade=='C'){
-            return 2
-        }else if(grade=='D+'){
-            return 1.5
-        }else if(grade=='D'){
-            return 1
-        }else if(grade=='F'){
-            return 0
-        }
+
+  let gpa: number = 0
+  let totalStudent: number = student.length
+  const getNumOfGrade = (grade: string) => {
+    if (grade == 'A') {
+      return 4
+    } else if (grade == 'B+') {
+      return 3.5
+    } else if (grade == 'B') {
+      return 3
+    } else if (grade == 'C+') {
+      return 2.5
+    } else if (grade == 'C') {
+      return 2
+    } else if (grade == 'D+') {
+      return 1.5
+    } else if (grade == 'D') {
+      return 1
+    } else if (grade == 'F') {
+      return 0
     }
+  }
 
-    student.map((item)=>{
-      console.log(item.Grade)
-        gpa = getNumOfGrade(item.Grade) + gpa
-    })
+  student.map((item) => {
+    console.log(item.Grade)
+    gpa = getNumOfGrade(item.Grade) + gpa
+  })
 
-    console.log(gpa)
-    console.log(totalStudent)
+  console.log(gpa)
+  console.log(totalStudent)
 
-
-  let Components = [];
-  student.map((item, index) => {
-    Components.push(
-      // <div className="max-w-screen-xl mx-auto text-center">
-        <form>
-          <table className=" min-w-full bg-white border border-gray-300 rounded-lg text-lg justify-around">
-            <thead>
-            <tr className=" text-black">
-              <th className="border p-2">
-                  <h1>{item.id}</h1>
-              </th>
-              <th className="border p-2">
-                  <h1>{item.Idstu}</h1>
-              </th>
-              <th className="border p-2">
-                  <h1>{item.Name}</h1>
-              </th>
-              <th className="border p-2">
-                  <h1>{item.Collect}</h1>
-              </th>
-              <th className="border p-2">
-                  <h1>{item.Midterm}</h1>
-              </th>
-              <th className="border p-2">
-                  <h1>{item.Final}</h1>
-              </th>
-              <th className="border p-2">
-                  <h1>
-                    {item.Midterm && item.Final && item.Collect
-                      ? calculateTotal(item.Midterm, item.Final, item.Collect)
-                      : ""}</h1>
-              </th>
-              <th className="border p-2">
-                  <h1>
-                      {item.Midterm && item.Final && item.Collect
-                      ? calculateGrade(calculateTotal(item.Midterm, item.Final, item.Collect))
-                      : ""}
-                      </h1>
-              </th>
-              <th className="border p-2">
-                  <h1>--</h1>
-              </th>
-              </tr>
-        </thead>
-      
-      </table>
-      </form>
-      // </div>
-    );
-  });
 
   const handleBackToSubject = () => {
     navigate("/Subject");
   };
+}
 
-  return (
-    <>
+<div>
     <Pagination
-        student={student}
-        currentPage={currentPage}
-        totalPage={totalPage}
-        handlePage={handlePage}
-      />
+      student={student}
+      currentPage={currentPage}
+      totalPage={totalPage}
+      handlePage={handlePage}
+    />
+
+return (
     <div className="bg-border  pl-16 pt-7 mt-10 ml-20 mr-20 rounded-lg text-black text-left">
       <p className="pt-3 text-xl ">ปีการศึกษา 2566</p>
       <p className=" text-xl  pt-2   ">
@@ -168,41 +119,84 @@ const Result_Score = ({ student }) => {
           </svg>
         </button>
       </div>
-
-      <div className="max-w-screen-xl mx-auto text-center">
-        <form>
-          <table className=" min-w-full bg-white border border-gray-300 rounded-lg text-lg">
-            <thead>
-              <tr className="bg-grayblue p-2 text-black">
-                <th className="border p-2">ลำดับ</th>
-                <th className="border p-2">รหัสนิสิต</th>
-                <th className="border p-2">ชื่อ-นามสกุล</th>
-                <th className="border p-2">คะแนนเก็บ</th>
-                <th className="border p-2">สอบกลางภาค</th>
-                <th className="border p-2">สอบปลายภาค</th>
-                <th className="border p-2">คะแนนรวม</th>
-                <th className="border p-2">ผลการเรียน</th>
-                <th className="border p-2">หมายเหตุ</th>
-              </tr>
-            </thead>
-          </table>
-          {Components}
-          <div className="pt-3 text-1xl text-black text-center font-bold text-xl">
-            <h1>เกรดเฉลี่ย GPA ของรายวิชาคือ {gpa/totalStudent}</h1>
-              
-          </div>
-        </form>
-        <div className="flex items-center justify-center pt-8 pb-8">
-          <button
-            onClick={handleBackToSubject}
-            className="block bg-white hover:bg-darkgray text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-          >
-            กลับ
-          </button>
-        </div>
-      </div>
     </div>
-    </>
-  );
-};
+    
+
+      let Components = [];
+      student.map((item, index) => {
+        Components.push(
+          <div className="max-w-screen-xl mx-auto text-center">
+            <form>
+              <table className=" min-w-full bg-white border border-gray-300 rounded-lg text-lg">
+                <thead>
+                  <div className="max-w-screen-xl mx-auto text-center">
+                    <tr className="bg-grayblue p-2 text-black">
+                      <th className="border p-2">ลำดับ</th>
+                      <th className="border p-2">รหัสนิสิต</th>
+                      <th className="border p-2">ชื่อ-นามสกุล</th>
+                      <th className="border p-2">คะแนนเก็บ</th>
+                      <th className="border p-2">สอบกลางภาค</th>
+                      <th className="border p-2">สอบปลายภาค</th>
+                      <th className="border p-2">คะแนนรวม</th>
+                      <th className="border p-2">ผลการเรียน</th>
+                      <th className="border p-2">หมายเหตุ</th>
+                    </tr>
+                    <tr className=" text-black">
+                      <td >
+                        <h1>{item.id}</h1>
+                      </td>
+                      <td className="border p-2">
+                        <h1>{item.Idstu}</h1>
+                      </td>
+                      <td className="border p-2">
+                        <h1>{item.Name}</h1>
+                      </td>
+                      <td className="border p-2">
+                        <h1>{item.Collect}</h1>
+                      </td>
+                      <td className="border p-2">
+                        <h1>{item.Midterm}</h1>
+                      </td>
+                      <td className="border p-2">
+                        <h1>{item.Final}</h1>
+                      </td>
+                      <td className="border p-2">
+                        <h1>
+                          {item.Midterm && item.Final && item.Collect
+                            ? calculateTotal(item.Midterm, item.Final, item.Collect)
+                            : ""}</h1>
+                      </td>
+                      <td className="border p-2">
+                        <h1>
+                          {item.Midterm && item.Final && item.Collect
+                            ? calculateGrade(calculateTotal(item.Midterm, item.Final, item.Collect))
+                            : ""}
+                        </h1>
+                      </td>
+                      <th className="border p-2">
+                        <h1>--</h1>
+                      </th>
+                    </tr>
+                  
+              {Components}
+              <div className="pt-3 text-1xl text-black text-center font-bold text-xl">
+                <h1>เกรดเฉลี่ย GPA ของรายวิชาคือ {gpa / totalStudent}</h1>
+              </div>
+            </form>
+            
+            <div className="flex items-center justify-center pt-8 pb-8">
+              <button
+                onClick={handleBackToSubject}
+                className="block bg-white hover:bg-darkgray text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              >
+                กลับ
+              </button>
+              </div>
+                </thead>
+              </table>
+            </div>
+          </div>
+        );
+  </div>
+)};
 export default Result_Score;
